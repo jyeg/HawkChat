@@ -1,4 +1,4 @@
-Signed in as @<%= cookies.signed[:username] %>.
+<!-- Signed in as @<%= cookies.signed[:username] %>. -->
 <!-- <%= link_to 'Change', root_path %> -->
 <br/>
 <br/>
@@ -14,4 +14,4 @@ Signed in as @<%= cookies.signed[:username] %>.
   <%= f.submit 'Send' %>
 <% end %>
 <!-- username <%= @username %> -->
-<%= react_component 'Messages', username: @username, messages: render(partial: 'messages/message.json', locals: {messages: @messages})  %>
+<%= react_component 'Messages', username: cookies.signed[:username], messages: render(partial: 'messages/message.json', locals: {messages: @messages})  %>

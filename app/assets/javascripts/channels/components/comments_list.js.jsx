@@ -1,4 +1,4 @@
-this.CommentList = React.createClass({
+var CommentList = React.createClass({
   getInitialState(){
     let message = JSON.parse(this.props.message);
     return {message: message};

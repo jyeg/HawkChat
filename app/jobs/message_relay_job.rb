@@ -1,10 +1,10 @@
 class MessageRelayJob < ApplicationJob
   def perform(message)
-    print "relay job"
+    # puts "relay job"
 
-    comment =  MessagesController.render(partial: 'messages/message',
-                                         locals: {message: message})
-    print comment
+    # comment =  MessagesController.render(partial: 'messages/message',
+    #                                      locals: {message: message})
+    # puts comment
     ActionCable.server.broadcast "messages",
                                  message: message
   end

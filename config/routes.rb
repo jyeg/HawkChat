@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  resources :comments
   resources :ingredients
   resources :messages
-  resources :messages, only: [:index, :create]
+  # resources :messages
   resources :sessions, only: [:new, :create]
 
   root 'sessions#new'

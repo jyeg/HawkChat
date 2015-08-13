@@ -7,7 +7,7 @@ gem 'actioncable', github: 'rails/actioncable'
 
 gem 'sqlite3'
 gem 'puma'
-
+gem 'therubyracer', platforms: :ruby
 # react-rails isn't compatible yet with latest Sprockets.
 # https://github.com/reactjs/react-rails/pull/322
 gem 'react-rails', '~> 1.0'
@@ -32,3 +32,4 @@ group :development do
   gem 'web-console', github: 'rails/web-console'
   gem 'spring'
 end
+gem 'rails_12factor', group: :production

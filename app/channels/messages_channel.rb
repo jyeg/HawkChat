@@ -4,22 +4,21 @@
 class MessagesChannel < ApplicationCable::Channel
   chat = []
   def subscribed
-    # puts "i am in messages channel"
+    puts "i am in messages channel"
     stream_from 'messages'
   end
   def createMessage(data)
     #write to db?
-    # puts "i am in messages channel"
+    puts "i am in messages channel"
     Message.create(data);
   end
   def message(data)
-    #  puts "i am in messages channel"
+   puts "i am in messages channel"
     message = nil
 
-    # ActiveRecord::Base.connection_pool.with_connection do |conn|
-    #   message = Message.create(content: data['text'], user: self.connection.current_user)
-    # end
-
+    ActiveRecord::Base.connection_pool.with_connection do |conn|
+      message = Message.create(content: params[:message][:body], user: cookies.signed[:username])
+    end
     ActionCable.server.broadcast "messages", render_message_html(message)
   end
   def render_message_html(message)
