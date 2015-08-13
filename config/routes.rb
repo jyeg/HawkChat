@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :ingredients
   resources :messages
   resources :messages, only: [:index, :create]
   resources :sessions, only: [:new, :create]

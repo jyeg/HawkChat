@@ -1,0 +1,10 @@
+<!-- <%= javascript_include_tag "records_with_fluxxor/fluxxor.js", "data-turbolinks-track" => true %>
+<%= javascript_include_tag "records_with_fluxxor/flux.js", "data-turbolinks-track" => true %> -->
+
+<script>
+  $(document).ready(function() {
+    window.loadIngredientSuggestionsEditor(#{@ingredients});
+  });
+</script>
+<h1>Edit ingredient suggestions</h1>
+<div id="js-ingredient-suggestions-editor"></div>

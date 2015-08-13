@@ -8,41 +8,92 @@ this.Messages = React.createClass({
     };
 
   },
+  updateUserList: function(users) {
+     var message = JSON.parse(users);
+     this.setState({users: users});
+   },
 
   componentWillMount: function() {
     var _this = this;
 
+    App.users = App.cable.subscriptions.create('UsersChannel', {
+        connected:function(){
+          console.log("in connected users");
+          setTimeout( function(){
+            App.users.perform( "subscribed", {topic_id: 1} );
+          },
+          1000);
+        },
+        subscribed:function(data) {
+          console.log("new User", data);
+          var users = _this.props.users;
+          users.push(data);
+          _this.setState({users: users});
+        },
+        received: function(data) {
+          console.log("in received users");
+          this.updateUserList(data.username);
+        },
+
+        updateUserList: this.updateUserList,
+        appear:function() {
+          // var messages = _this.props.messages.messages;
+          // messages.push(data);
+          // _this.setState({messages: messages});
+        },
+          // @perform 'appear', appearing_on: @appearingOn()
+
+        away: function(){
+          // this.perform 'away'
+        }
+        // appearingOn: function(){
+        //   $('main').data 'appearing-on'
+    });
+    setTimeout( function(){
+      console.log("in subscribed to users");
+      App.users.perform( "subscribed");
+    },
+    1000);
+        // }
+
     App.messages = App.cable.subscriptions.create('MessagesChannel', {
       received: function(data) {
-        console.log(data);
+        console.log("in receieved new message", data);
         var messages = _this.props.messages.messages;
         messages.push(data);
         _this.setState({messages: messages});
+      },
+      createMessage: function(data){
+        console.log("in create message");
+        App.users.perform( "message", "test");
       }
     });
 
     setTimeout( function(){
-      App.messages.perform( "subscribed", {topic_id: window.topic.id} );
+      console.log("in subscribed to message");
+      App.messages.perform( "subscribed", {topic_id: 1} );
     },
     1000);
   },
 
   render: function() {
     var messageList = JSON.parse(this.props.messages);
-
-    var listItems = messageList.messages.map(function(message){
+    console.log("users", this.state.users);
+    var listItems = messageList.messages.map(function(message, index){
       return <Message key={message.id} user={message.user} content={message.content} />;
     });
+    // <UsersList users={this.state.users}
 
     return (
       <div>
-        <h2>{ this.props.username }</h2>
+        <h2>name:{ this.props.username }</h2>
         { listItems }
+        <MessageForm  onClick={App.createMessage}/>
       </div>
     );
   },
+  // topic={window.topic}
   // <h2>{ window.topic.name }</h2>
-  // <MessageForm topic={window.topic} />
 
   	_initialize(data) {
   		var {users, name} = data;
